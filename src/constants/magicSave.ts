@@ -1,0 +1,65 @@
+const magicSaveConstants = {
+  STATUS_CODES: {
+    SUCCESS_CODE: 200,
+    CREATION_SUCCESSFUL_CODE: 201,
+    ERROR_CODE: 400,
+    ALREADY_EXISTS_CODE: 409,
+  },
+  RESPONSE: {
+    RECORDS_LENGTH_ZERO: 0,
+  },
+  FORM_ELEMENTS: {
+    SELECT_TAG: 'select',
+    TEXTAREA_TAG: 'textarea',
+    SPAN_TAG: 'span',
+    PARAGRAPH_TAG: 'p',
+    LABEL_TAG: 'label',
+    DIV_TAG: 'div',
+    INPUT_TAG: 'input',
+    FIELDSET_TAG: 'fieldset',
+    BUTTON_TAG: 'button',
+  },
+  INPUT_TYPES: {
+    RADIO: 'radio',
+    CHECKBOX: 'checkbox',
+    TEXT: 'text',
+    NUMBER: 'number',
+    DATE: 'date',
+    HIDDEN: 'hidden',
+  },
+  ERRORS: {
+    UNRECOGNIZED_FIELD_TYPE_PROVIDED: 'Unrecognized field type provided.',
+    EXPECTING_MINIMUM_AMOUNT_OF_DATA: 'Expecting Minimum amount of Data.',
+    API_INTEGRATION_ISSUE: 'Something went wrong. Please try again later.',
+    INVALID_CONTAINER_ID_PROVIDED: 'Please provide valid Container ID.',
+  },
+  DAIGNOSTICS: {
+    INCLUDE_DIAGNOSTICS_YES: 'Y',
+    INCLUDE_DIAGNOSTICS_NO: 'N',
+  },
+  ATTRIBUTES: {
+    IS_MULTI_SELECT: 'data-is-multi-select',
+    DATA_SOURCE_NAME: 'data-sourcename',
+    DATA_FIELD_NAME: 'data-fieldname',
+    IS_DATA_GRID: 'data-is-grid',
+    IS_AUTOCOMPLETE: 'data-is-autocomplete',
+    QUERY_SELECTOR: '[data-sourcename][data-fieldname]',
+  },
+  TRUE: 'true',
+  APPENDING_VALUES: {
+    CONTAINER_ID: 'containerId',
+    DATA_FRAMEWORK_OPERATOR_TYPE: 'dataframeworkOperatorType',
+    DATA: 'data',
+    DATA_FRAMEWORK_OTHER_PARAMS_BAG: 'dataframeworkOtherParamsBag',
+    KEYS: 'keys',
+    HEADERS: 'headers',
+    FILE_OPERATION: 'fileOperation',
+    DOCUMENTS_TO_CREATE: 'documents_to_create',
+  },
+  MAGIC_SAVE_PATH: 'api/v1/magic-save/submit',
+  MAGIC_READ_PATH: 'api/v1/magic-read/select',
+  DATA_STATUS: 'data-status',
+  CUSTOM_CLASS_NAME: 'data-grid-delete row-',
+} as const
+
+export default magicSaveConstants

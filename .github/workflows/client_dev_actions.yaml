@@ -1,0 +1,96 @@
+name: Client Dev Frontend Deployment
+ 
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  client_dev_frontend:
+    runs-on: eQms_dev_frontend_new
+ 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+ 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.CLIENT_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CLIENT_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+ 
+      - name: current path and directory
+        run: |
+          pwd
+          ls -la
+ 
+      - name: Build test before deploy
+        run: |
+          cd /home/ubuntu/frontend_build_test_env
+          pwd
+          ls -la
+          sudo find . -mindepth 1 -delete
+          cp -r /home/ubuntu/actions-runner/_work/eqms_tenant_portal/eqms_tenant_portal/* .
+          aws s3 cp s3://eqms-c-infra-files/dev-frontend-env/.env .
+          npm install
+          sleep 5
+          npm run build
+ 
+      - name: Deploy Latest
+        if: success()
+        run: |
+          pm2 list
+          pm2 stop eqms_tenant_portal
+          cd /home/ubuntu/frontend/eqms_tenant_portal
+          pwd
+          ls -la
+          sudo find . -mindepth 1 -delete
+          sleep 5
+          cp -r /home/ubuntu/actions-runner/_work/eqms_tenant_portal/eqms_tenant_portal/* .
+          ls -la
+          aws s3 cp s3://eqms-c-infra-files/dev-frontend-env/.env .
+          ls -la
+          node --version
+          npm --version
+          npm install
+          sleep 5
+          npm run build
+          pm2 restart eqms_tenant_portal
+          pm2 list
+          pm2 save
+ 
+  notify_developers:
+    name: Notify Developers via Email
+    needs: client_dev_frontend
+    runs-on: ubuntu-latest
+ 
+    env:
+      OUTLOOK_EMAIL: ${{ vars.OUTLOOK_EMAIL }}
+      OUTLOOK_PASSWORD: ${{ vars.OUTLOOK_PASSWORD }}
+      TO_EMAILS: praveenram@swaas.net
+ 
+    steps:
+      - name: Send Email Notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: ${{ env.OUTLOOK_EMAIL }}
+          password: ${{ env.OUTLOOK_PASSWORD }}
+          subject: "GitHub Actions: Deployment ${{ needs.client_dev_frontend.result == 'success' && 'Succeeded ✅' || 'Failed ❌' }}"
+          to: ${{ env.TO_EMAILS }}
+          from: GitHub Actions <${{ env.OUTLOOK_EMAIL }}>
+          body: |
+            Hello Team,
+ 
+            The deployment pipeline has completed with status: **${{ needs.client_dev_frontend.result }}**.
+ 
+            - Repository: ${{ github.repository }}
+            - Branch: ${{ github.ref }}
+            - Commit: ${{ github.sha }}
+            - Status: ${{ needs.client_dev_frontend.result == 'success' && 'Success ✅' || 'Failed ❌' }}
+ 
+            View the workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+ 
+            Regards,
+            GitHub Actions Bot.

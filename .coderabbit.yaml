@@ -1,0 +1,868 @@
+language: "en-US"
+
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  high_level_summary_in_walkthrough: false
+  auto_title_placeholder: "@coderabbitai"
+  auto_title_instructions: "Generate descriptive titles focusing on Next.js 15 App Router patterns and frontend improvements"
+  review_status: true
+  commit_status: true
+  fail_commit_status: false
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: true
+  auto_apply_labels: false
+  suggested_reviewers: true
+  auto_assign_reviewers: false
+  poem: true
+  labeling_instructions:
+    - label: ""
+      instructions: ""
+  path_filters: []
+  path_instructions:
+    - path: "app/**/*.{ts,tsx}"
+      instructions: |
+        **NEXT.JS 15 APP ROUTER CRITICAL REQUIREMENTS:**
+
+        **1. APP ROUTER ARCHITECTURE:**
+        - REQUIRE: Server Components by default for better performance and SEO
+        - REQUIRE: Proper loading.tsx and error.tsx for route segments
+        - REQUIRE: Server Actions for form submissions and data mutations
+        - REQUIRE: Proper metadata.ts for SEO optimization
+        - BLOCK: Client Components without 'use client' directive when interactivity needed
+        - BLOCK: Server Components with client-side state or browser APIs
+        - REQUIRE: Dynamic imports with next/dynamic for client components
+        - REQUIRE: Proper Suspense boundaries for streaming
+        - REQUIRE: generateStaticParams for static route generation
+        - REQUIRE: Proper revalidation strategies (ISR, on-demand)
+        - REQUIRE: Route groups for logical organization ((dnd), (dashboard))
+        - REQUIRE: Parallel routes for complex layouts (@modal, @sidebar)
+        - REQUIRE: Intercepting routes for modal-like navigation ((..)photo)
+        - REQUIRE: Template files for shared layouts (template.tsx)
+        - REQUIRE: Not-found pages for 404 handling (not-found.tsx)
+        - REQUIRE: Global error boundaries (global-error.tsx)
+
+        **2. SERVER COMPONENTS SECURITY:**
+        - BLOCK: Sensitive data exposure in Server Components
+        - REQUIRE: Proper environment variable scoping (NEXT_PUBLIC_ prefix only for client)
+        - BLOCK: Client-side secrets in Server Components
+        - REQUIRE: Input validation with Zod schemas in Server Actions
+        - BLOCK: Error messages exposing sensitive data
+        - REQUIRE: Proper authentication and authorization checks
+        - REQUIRE: CSRF protection for form submissions
+        - BLOCK: XSS vulnerabilities through user input rendering
+
+        **3. SERVER ACTIONS PATTERNS (EXTERNAL API INTEGRATION):**
+        - REQUIRE: 'use server' directive for Server Actions
+        - REQUIRE: Server Actions for API communication with external Node.js backend
+        - REQUIRE: Proper API authentication headers in Server Actions
+        - REQUIRE: Form validation with server-side Zod schemas before API calls
+        - REQUIRE: Proper revalidateTag() and revalidatePath() after API mutations
+        - REQUIRE: Server Action error handling for API communication failures
+        - REQUIRE: Client-side retry logic and error handling for Server Actions
+        - BLOCK: Direct database operations in Server Actions (use external API)
+        - REQUIRE: Proper async/await patterns for external API fetching
+        - REQUIRE: Server-only imports for server-side API utilities
+
+        **4. RSC (REACT SERVER COMPONENTS) PATTERNS FOR EXTERNAL API:**
+        - REQUIRE: async/await in Server Components for external API fetching
+        - REQUIRE: Proper RSC payload optimization
+        - REQUIRE: Streaming with Suspense boundaries
+        - REQUIRE: Server-only imports for server-side API utilities
+        - REQUIRE: API endpoint configuration management
+        - REQUIRE: Proper error boundaries for API failures
+        - REQUIRE: Client-side caching strategies for API responses
+        - REQUIRE: Request deduplication for external API calls
+
+        **5. PERFORMANCE OPTIMIZATION:**
+        - REQUIRE: Streaming with Suspense for progressive rendering
+        - REQUIRE: Code splitting with dynamic imports
+        - REQUIRE: Next.js Image component for automatic optimization
+        - REQUIRE: Font optimization with next/font
+        - REQUIRE: Dynamic imports with next/dynamic
+        - REQUIRE: Partial Prerendering (PPR) considerations
+        - REQUIRE: Edge Runtime for API-proxying routes
+        - FLAG: Large bundle sizes without code splitting
+        - FLAG: Missing loading states for async operations
+        - SUGGEST: Parallel routes for complex layouts
+        - SUGGEST: Intercepting routes for modal-like navigation
+
+    - path: "app/**/components/**/*.{ts,tsx}"
+      instructions: |
+        **REACT + TYPESCRIPT CRITICAL REQUIREMENTS:**
+
+        **1. TYPE SAFETY:**
+        - BLOCK: 'any' type usage - define proper interfaces instead
+        - REQUIRE: Import types using 'import type' syntax
+        - BLOCK: Inline type definitions in components or services
+        - REQUIRE: Explicit typing for all function parameters and return types
+        - REQUIRE: 'unknown' instead of 'any' for uncertain types
+        - REQUIRE: Union types instead of loose typing
+        - BLOCK: Unused imports and unreachable code paths
+        - REQUIRE: 'readonly' for immutable properties
+        - REQUIRE: Proper null/undefined handling with optional chaining
+
+        **2. SECURITY REQUIREMENTS:**
+        - BLOCK: dangerouslySetInnerHTML without proper sanitization (use DOMPurify)
+        - BLOCK: Hardcoded sensitive data (API keys, passwords, tokens, secrets)
+        - BLOCK: Sensitive data logging (passwords, tokens, PII, credit cards, SSNs)
+        - BLOCK: console.log statements in production code (use proper logging service)
+        - BLOCK: Secrets in client-side environment variables (use NEXT_PUBLIC_ prefix only)
+        - REQUIRE: HTTPS for ALL API calls with proper authentication headers
+        - REQUIRE: Input validation and sanitization before processing
+        - BLOCK: Error messages exposing sensitive data or internal details
+        - REQUIRE: Content Security Policy (CSP) headers
+        - REQUIRE: Secure cookie settings (HttpOnly, Secure, SameSite=Strict)
+        - REQUIRE: CSRF token validation in API requests
+        - BLOCK: JWT token storage in localStorage (use HttpOnly cookies)
+
+        **3. REACT PATTERNS & CODE QUALITY:**
+        - REQUIRE: PascalCase for component files with descriptive names
+        - REQUIRE: Custom hooks starting with 'use' and camelCase
+        - BLOCK: Direct API calls in components - use service layer pattern
+        - REQUIRE: React.memo for expensive components
+        - REQUIRE: Proper loading states and error boundaries
+        - REQUIRE: Proper dependency arrays in useEffect/useMemo
+        - REQUIRE: Feature-based directory structure
+        - REQUIRE: Named exports for components and 'export type' for types
+        - REQUIRE: Single responsibility principle for components
+        - REQUIRE: Component composition over inheritance
+        - REQUIRE: Proper prop interfaces with validation
+        - REQUIRE: Default props and prop types
+        - BLOCK: Large components exceeding 200 lines
+        - BLOCK: Complex conditional rendering without proper abstraction
+        - FLAG: Missing React.memo for expensive components
+        - FLAG: Inconsistent component naming patterns
+        - SUGGEST: Custom hooks for reusable logic
+        - SUGGEST: Higher-order components for cross-cutting concerns
+
+        **4. CONSTANTS & MAGIC VALUES:**
+        - BLOCK: Magic values (hardcoded strings, numbers, URLs, colors, dimensions)
+        - REQUIRE: Named constants for ALL hardcoded values
+        - REQUIRE: Descriptive constant names explaining the value's purpose
+        - REQUIRE: Constants imported from /constants directory
+        - REQUIRE: 'as const' assertions for type safety
+        - REQUIRE: UPPER_SNAKE_CASE for constant names
+
+        **5. ACCESSIBILITY:**
+        - REQUIRE: ARIA labels and roles for ALL interactive elements
+        - REQUIRE: Semantic HTML (nav, main, section, article, header, footer)
+        - REQUIRE: Proper heading hierarchy (h1, h2, h3, etc.)
+        - REQUIRE: Alt text for ALL images and icons
+        - REQUIRE: Keyboard navigation support for interactive elements
+        - REQUIRE: Sufficient color contrast ratios (WCAG AA compliance)
+        - REQUIRE: Focus indicators for keyboard navigation
+        - REQUIRE: Proper form labels and fieldset groupings
+
+        **6. PERFORMANCE:**
+        - REQUIRE: Code splitting with React.lazy() for route-based splitting
+        - REQUIRE: Dynamic imports for heavy components and libraries
+        - REQUIRE: Bundle size optimization with tree shaking
+        - REQUIRE: Proper memoization with useMemo and useCallback
+        - REQUIRE: Image optimization (WebP format, proper sizing)
+        - FLAG: Missing loading strategies (lazy loading, preloading)
+        - SUGGEST: Virtual scrolling for large lists
+        - SUGGEST: Bundle size monitoring and performance budgets
+
+        **7. ERROR HANDLING & BOUNDARIES:**
+        - REQUIRE: Error boundaries for graceful error handling
+        - REQUIRE: Proper error states and fallback UI
+        - BLOCK: Unhandled promise rejections in async operations
+        - REQUIRE: Proper error logging without sensitive data exposure
+        - REQUIRE: User-friendly error messages
+        - FLAG: Missing error boundaries for critical components
+        - SUGGEST: Global error boundary implementation
+
+        **8. STATE MANAGEMENT:**
+        - REQUIRE: Proper state management patterns (useState, useReducer, Context)
+        - BLOCK: Prop drilling for deeply nested components
+        - REQUIRE: State normalization for complex data
+        - REQUIRE: Proper state updates with immutability
+        - FLAG: Excessive re-renders due to state management
+        - SUGGEST: State management libraries for complex applications (Zustand, Redux Toolkit)
+
+        **9. REACT QUERY (TANSTACK QUERY) PATTERNS (CLIENT-SIDE ONLY):**
+        - REQUIRE: React Query for client-side state management only
+        - REQUIRE: useQuery for client-side data fetching with proper error handling
+        - REQUIRE: useMutation for client-side data mutations with optimistic updates
+        - REQUIRE: Proper query keys with consistent naming conventions
+        - REQUIRE: Query invalidation after successful mutations
+        - REQUIRE: Proper loading and error states for all queries
+        - REQUIRE: Query retry logic with exponential backoff
+        - REQUIRE: Cache management with proper stale time configuration
+        - REQUIRE: Background refetching for stale data
+        - REQUIRE: Optimistic updates with proper rollback mechanisms
+        - REQUIRE: Hydration of server data with Query Client
+        - BLOCK: Direct API calls in components - use React Query hooks
+        - BLOCK: Unhandled query errors without proper error boundaries
+        - BLOCK: Mutations without query invalidation
+        - BLOCK: React Query in Server Components (use fetch() instead)
+        - FLAG: Missing query invalidation after mutations
+        - FLAG: Inconsistent query key patterns
+        - FLAG: Missing optimistic updates for user interactions
+        - SUGGEST: Custom query hooks for reusable data fetching logic
+        - SUGGEST: Query client configuration for global cache settings
+
+        **10. CODE ORGANIZATION:**
+        - REQUIRE: Feature-based directory structure
+        - REQUIRE: Proper file naming conventions
+        - REQUIRE: Separation of concerns (components, hooks, utilities)
+        - REQUIRE: Barrel exports (index.ts files) for clean imports
+        - BLOCK: Circular dependencies between modules
+        - FLAG: Large files exceeding 300 lines
+        - SUGGEST: Component composition over inheritance
+
+    - path: "app/**/*.styled.{ts,tsx}"
+      instructions: |
+        **STYLED COMPONENTS CRITICAL REQUIREMENTS:**
+
+        **1. THEMING AND TYPE SAFETY:**
+        - REQUIRE: Theme tokens instead of hardcoded values (theme.palette.*, theme.spacing(), theme.breakpoints.*)
+        - REQUIRE: Responsive design with proper breakpoints
+        - REQUIRE: Material-UI import patterns and conventions
+        - REQUIRE: Organization in app/components/styled/feature-name/ directory structure
+        - REQUIRE: Type safety for styled components with proper TypeScript interfaces
+        - REQUIRE: Consistent naming conventions for styled components
+        - BLOCK: Magic values - use theme constants for colors, spacing, typography
+        - FLAG: Missing theme token usage in styled components
+        - SUGGEST: Custom theme extensions for project-specific design tokens
+
+    - path: "app/**/hooks/**/*query*.{ts,tsx}"
+      instructions: |
+        **REACT QUERY (TANSTACK QUERY) CRITICAL REQUIREMENTS:**
+
+        **1. QUERY PATTERNS & BEST PRACTICES:**
+        - REQUIRE: useQuery for data fetching with proper error handling
+        - REQUIRE: useMutation for data mutations with optimistic updates
+        - REQUIRE: Proper query keys with consistent naming conventions
+        - REQUIRE: Query invalidation after successful mutations
+        - REQUIRE: Proper loading and error states for all queries
+        - REQUIRE: Query retry logic with exponential backoff
+        - REQUIRE: Query prefetching for better UX
+        - REQUIRE: Proper query deduplication and caching strategies
+        - BLOCK: Direct API calls in components - use React Query hooks
+        - BLOCK: Unhandled query errors without proper error boundaries
+        - FLAG: Missing query invalidation after mutations
+        - FLAG: Inconsistent query key patterns
+        - SUGGEST: Custom query hooks for reusable data fetching logic
+
+        **2. CACHE MANAGEMENT:**
+        - REQUIRE: Proper cache time and stale time configuration
+        - REQUIRE: Cache invalidation strategies for data consistency
+        - REQUIRE: Background refetching for stale data
+        - REQUIRE: Cache persistence for offline support when needed
+        - REQUIRE: Proper cache key structure for efficient updates
+        - BLOCK: Infinite cache times without proper invalidation
+        - FLAG: Missing cache invalidation after data mutations
+        - SUGGEST: Query client configuration for global cache settings
+
+        **3. ERROR HANDLING FOR QUERIES:**
+        - REQUIRE: Proper error boundaries for query errors
+        - REQUIRE: User-friendly error messages for failed queries
+        - REQUIRE: Retry logic with exponential backoff for transient errors
+        - REQUIRE: Proper error logging without sensitive data exposure
+        - REQUIRE: Fallback UI for error states
+        - BLOCK: Error messages exposing sensitive data or internal details
+        - FLAG: Missing error handling in query hooks
+        - SUGGEST: Global error handling for React Query
+
+        **4. OPTIMISTIC UPDATES:**
+        - REQUIRE: Optimistic updates for better UX in mutations
+        - REQUIRE: Proper rollback logic for failed optimistic updates
+        - REQUIRE: Cache updates before server response
+        - REQUIRE: Proper error handling for optimistic update failures
+        - BLOCK: Optimistic updates without proper rollback mechanisms
+        - FLAG: Missing optimistic updates for user interactions
+        - SUGGEST: Optimistic update patterns for common mutations
+
+        **5. QUERY INVALIDATION:**
+        - REQUIRE: Query invalidation after successful mutations
+        - REQUIRE: Proper invalidation scope (exact vs. partial)
+        - REQUIRE: Invalidation of related queries for data consistency
+        - REQUIRE: Proper timing for query invalidation
+        - BLOCK: Mutations without query invalidation
+        - FLAG: Over-invalidation causing unnecessary refetches
+        - SUGGEST: Invalidation strategies for complex data relationships
+
+    - path: "**/*ckeditor*/**/*.{ts,tsx}"
+      instructions: |
+        **CKEDITOR INTEGRATION CRITICAL REQUIREMENTS:**
+
+        **1. RICH TEXT EDITOR SECURITY:**
+        - REQUIRE: Content sanitization before saving to database
+        - REQUIRE: XSS prevention through proper content filtering
+        - REQUIRE: Allowed HTML tags and attributes whitelist
+        - REQUIRE: Disabled dangerous features (script execution, file uploads)
+        - REQUIRE: Proper CSP headers for editor content
+        - BLOCK: Unsanitized content from CKEditor
+        - BLOCK: Script execution in editor content
+        - BLOCK: File uploads without proper validation
+        - FLAG: Missing content sanitization
+        - SUGGEST: DOMPurify integration for content sanitization
+
+        **2. CONTENT SANITIZATION:**
+        - REQUIRE: HTML sanitization before processing editor content
+        - REQUIRE: Removal of potentially dangerous HTML elements
+        - REQUIRE: Validation of allowed HTML attributes
+        - REQUIRE: Proper encoding of special characters
+        - REQUIRE: Content length validation and limits
+        - BLOCK: Raw HTML content without sanitization
+        - BLOCK: Dangerous HTML attributes (onclick, onload, etc.)
+        - FLAG: Missing content validation
+        - SUGGEST: Server-side content validation in addition to client-side
+
+        **3. XSS PREVENTION IN EDITOR CONTENT:**
+        - REQUIRE: Content filtering to prevent XSS attacks
+        - REQUIRE: Proper HTML encoding for user input
+        - REQUIRE: Validation of editor configuration for security
+        - REQUIRE: Safe rendering of editor content
+        - REQUIRE: Proper Content Security Policy for editor
+        - BLOCK: dangerouslySetInnerHTML without sanitization
+        - BLOCK: Unsafe editor configuration options
+        - FLAG: Missing XSS protection measures
+        - SUGGEST: Regular security audits of editor content
+
+        **4. EDITOR CONFIGURATION BEST PRACTICES:**
+        - REQUIRE: Minimal editor configuration for security
+        - REQUIRE: Disabled unnecessary plugins and features
+        - REQUIRE: Proper toolbar configuration with allowed tools only
+        - REQUIRE: Content filtering rules configuration
+        - REQUIRE: Proper error handling for editor initialization
+        - REQUIRE: Accessibility features enabled
+        - BLOCK: Overly permissive editor configuration
+        - BLOCK: Unnecessary plugins that increase attack surface
+        - FLAG: Missing editor configuration validation
+        - SUGGEST: Custom editor builds for minimal footprint
+
+    - path: "app/**/lib/api/**/*.{ts,tsx}"
+      instructions: |
+        **FRONTEND API CLIENT LAYER CRITICAL REQUIREMENTS:**
+
+        **1. API CLIENT ABSTRACTION:**
+        - REQUIRE: Centralized API client abstraction layer for external API calls
+        - REQUIRE: Request/response interceptors for authentication and error handling
+        - REQUIRE: API error boundary implementations for graceful failures
+        - REQUIRE: Proper API endpoint environment configuration (NEXT_PUBLIC_ prefix)
+        - REQUIRE: API authentication state management (tokens, cookies)
+        - REQUIRE: Optimistic updates for better UX in mutations
+        - REQUIRE: Request deduplication to prevent duplicate API calls
+        - REQUIRE: Client-side caching strategies for API responses
+        - BLOCK: Direct fetch calls without API client abstraction
+        - BLOCK: Hardcoded API endpoints in components
+        - FLAG: Missing API error handling in components
+        - SUGGEST: API client configuration management
+
+        **2. EXTERNAL API INTEGRATION:**
+        - REQUIRE: Server Actions for external API calls when possible
+        - REQUIRE: Proper error handling and user-friendly error messages
+        - REQUIRE: Authentication headers and token management
+        - REQUIRE: Request/response interceptors for common headers
+        - REQUIRE: Client-side retry logic with exponential backoff
+        - REQUIRE: Proper caching strategies for API responses
+        - REQUIRE: Type safety for API responses and requests
+        - REQUIRE: Client-side validation for API inputs
+
+        **3. FRONTEND SECURITY:**
+        - BLOCK: Hardcoded API keys, tokens, or secrets in client-side code
+        - BLOCK: Sensitive data exposure in error messages or console logs
+        - BLOCK: console.log statements in production code (use proper logging service)
+        - REQUIRE: Environment variables with NEXT_PUBLIC_ prefix for client-side config
+        - REQUIRE: Sanitize and validate all user input before API calls
+        - REQUIRE: Secure authentication token handling (HttpOnly cookies preferred)
+        - REQUIRE: HTTPS for all API communications
+        - REQUIRE: CSRF token validation in request headers when needed
+        - REQUIRE: Secure cookie settings for authentication tokens
+        - REQUIRE: Input validation and sanitization on client-side
+        - BLOCK: Error messages exposing sensitive data or internal details
+        - REQUIRE: Secure session management on client-side
+        - REQUIRE: Content Security Policy (CSP) headers
+        - REQUIRE: Subresource integrity (SRI) for external CDN resources
+        - REQUIRE: Security headers for client-side security
+        - REQUIRE: Secure random generation for client-side tokens/IDs
+        - REQUIRE: Proper logout functionality with token cleanup
+        - REQUIRE: Security-focused error boundaries to prevent information leakage
+        - BLOCK: Information disclosure in error messages, logs, or responses
+        - FLAG: Missing input length validation
+        - FLAG: Unsafe eval() or Function() usage
+        - FLAG: Insecure random number generation (Math.random())
+
+        **4. UTILITY FUNCTIONS:**
+        - REQUIRE: Pure functions where possible
+        - REQUIRE: Proper TypeScript types for all parameters and returns
+        - REQUIRE: Error handling and validation
+        - REQUIRE: Descriptive function names and documentation
+        - REQUIRE: Testing for utility functions
+        - REQUIRE: Proper async/await patterns
+        - REQUIRE: Client-side logging and monitoring
+
+        **5. SERVICE LAYER PATTERNS:**
+        - REQUIRE: Singleton pattern for service instances
+        - REQUIRE: Proper error handling with try-catch blocks
+        - REQUIRE: Import types from /types directory using 'import type' syntax
+        - BLOCK: Inline type definitions - use imported types
+        - REQUIRE: Data transformation methods for API responses
+        - REQUIRE: Authentication headers handled securely
+        - REQUIRE: HTTPS for all API calls with proper error handling
+        - REQUIRE: Consistent naming conventions for service methods
+        - REQUIRE: Error monitoring and logging for API calls
+        - FLAG: Missing error handling in service methods
+        - SUGGEST: Service layer abstraction for external API calls
+
+    - path: "app/**/lib/**/*.{ts,tsx}"
+      instructions: |
+        **FRONTEND UTILITY AND SERVICE REQUIREMENTS:**
+
+        **1. UTILITY FUNCTIONS:**
+        - REQUIRE: Pure functions where possible
+        - REQUIRE: Proper TypeScript types for all parameters and returns
+        - REQUIRE: Error handling and validation
+        - REQUIRE: Descriptive function names and documentation
+        - REQUIRE: Testing for utility functions
+        - REQUIRE: Proper async/await patterns
+        - REQUIRE: Client-side logging and monitoring
+
+        **2. SERVICE LAYER PATTERNS:**
+        - REQUIRE: Singleton pattern for service instances
+        - REQUIRE: Proper error handling with try-catch blocks
+        - REQUIRE: Import types from /types directory using 'import type' syntax
+        - BLOCK: Inline type definitions - use imported types
+        - REQUIRE: Data transformation methods for API responses
+        - REQUIRE: Authentication headers handled securely
+        - REQUIRE: HTTPS for all API calls with proper error handling
+        - REQUIRE: Consistent naming conventions for service methods
+        - REQUIRE: Error monitoring and logging for API calls
+        - FLAG: Missing error handling in service methods
+        - SUGGEST: Service layer abstraction for external API calls
+
+    - path: "app/**/types/**/*.{ts,tsx}"
+      instructions: |
+        **TYPE DEFINITIONS CRITICAL REQUIREMENTS:**
+
+        **1. TYPE ORGANIZATION:**
+        - REQUIRE: Descriptive PascalCase naming for all types
+        - REQUIRE: Export types using 'export type' syntax
+        - REQUIRE: Organization by feature in separate files
+        - REQUIRE: Appropriate suffixes (Props, State, Type, Data, Config)
+        - BLOCK: 'any' type usage - define specific interfaces
+        - REQUIRE: Generic types where appropriate for reusability
+        - REQUIRE: Built-in utility types (Partial, Pick, Omit) appropriately
+        - REQUIRE: Proper generic constraints and defaults
+        - REQUIRE: Group related types together in logical files
+        - BLOCK: Duplicate type definitions
+        - BLOCK: Circular dependencies between type files
+
+        **2. TYPE SAFETY:**
+        - REQUIRE: Discriminated unions for complex state management
+        - REQUIRE: Proper extends/implements syntax
+        - REQUIRE: Custom utility types for common patterns
+        - REQUIRE: Function overloads for complex APIs
+        - REQUIRE: 'readonly' for immutable properties
+        - REQUIRE: Null/undefined handling explicitly
+        - REQUIRE: Callback types explicitly
+        - REQUIRE: Avoid circular dependencies between type files
+        - BLOCK: Circular dependencies between type files
+        - REQUIRE: Proper generic constraints and defaults
+        - REQUIRE: Union types instead of loose typing
+        - REQUIRE: Proper nullish coalescing (??) usage
+        - REQUIRE: Justification for non-null assertions (!) or removal
+        - REQUIRE: Built-in utility types (Partial, Pick, Omit) properly
+        - REQUIRE: Position optional parameters correctly
+        - REQUIRE: Type rest parameters and callback types explicitly
+        - REQUIRE: Enums vs union types appropriately
+        - BLOCK: String enums without proper typing
+        - FLAG: Missing type annotations for complex return types
+        - SUGGEST: Type guards for runtime type checking
+
+    - path: "app/**/constants/**/*.{ts,tsx}"
+      instructions: |
+        **CONSTANTS CRITICAL REQUIREMENTS:**
+
+        **1. CONSTANTS ORGANIZATION:**
+        - REQUIRE: UPPER_SNAKE_CASE for constant names
+        - REQUIRE: 'as const' assertions for type safety and immutability
+        - REQUIRE: Organization by feature/domain in separate files
+        - REQUIRE: Descriptive names explaining the constant's purpose
+        - REQUIRE: Grouping related constants together logically
+        - REQUIRE: Centralized re-exports in index.ts files
+        - BLOCK: Sensitive data exposure in constants
+        - REQUIRE: NEXT_PUBLIC_ prefix only for non-sensitive environment variables
+
+        **2. MAGIC VALUES ELIMINATION:**
+        - BLOCK: Magic values (strings, numbers, URLs, colors, dimensions)
+        - REQUIRE: Constants for ALL magic values
+        - REQUIRE: Descriptive names explaining what the value represents
+        - REQUIRE: Centralized configuration values in constants
+        - REQUIRE: Constants for API endpoints, validation rules, and UI values
+
+    - path: "app/**/hooks/**/*.{ts,tsx}"
+      instructions: |
+        **CUSTOM HOOKS CRITICAL REQUIREMENTS:**
+
+        **1. HOOK PATTERNS:**
+        - REQUIRE: Hook names starting with 'use' and descriptive purpose
+        - REQUIRE: Proper dependency arrays in useEffect and useMemo
+        - REQUIRE: Error handling and loading states
+        - REQUIRE: Type safety with proper return types and parameters
+        - REQUIRE: Cleanup functions where needed (useEffect cleanup)
+        - REQUIRE: React hooks rules and best practices
+        - REQUIRE: Reusable logic implementation
+        - REQUIRE: Error boundaries where appropriate
+
+        **2. ADVANCED PATTERNS:**
+        - REQUIRE: TypeScript generics for flexible hooks
+        - REQUIRE: Testing for custom hooks
+        - REQUIRE: Async operations handling properly
+        - REQUIRE: State management patterns
+        - FLAG: Missing error handling in async hooks
+        - SUGGEST: Custom hook composition for complex logic
+
+    - path: "app/**/*.{css,scss,module.css,module.scss}"
+      instructions: |
+        **STYLING CRITICAL REQUIREMENTS:**
+
+        **1. CSS ORGANIZATION:**
+        - REQUIRE: CSS Modules or styled-components for component-scoped styles
+        - REQUIRE: Responsive design with CSS Grid and Flexbox
+        - REQUIRE: CSS custom properties for theming and consistency
+        - REQUIRE: Accessibility with focus states and contrast
+        - REQUIRE: CSS organization and naming conventions
+        - REQUIRE: Loading states and animations
+        - REQUIRE: CSS optimization and minification
+        - REQUIRE: Dark mode support
+
+        **2. PERFORMANCE:**
+        - FLAG: Large CSS bundles without optimization
+        - SUGGEST: CSS-in-JS patterns when applicable
+        - SUGGEST: CSS performance optimization
+        - BLOCK: Inline styles for complex styling
+
+    - path: "app/layout.{ts,tsx}"
+      instructions: |
+        **ROOT LAYOUT CRITICAL REQUIREMENTS:**
+
+        **1. LAYOUT STRUCTURE:**
+        - REQUIRE: Default export of layout component
+        - REQUIRE: Proper metadata export for SEO
+        - REQUIRE: Root providers (QueryClient, Redux, Theme)
+        - REQUIRE: Global error boundary implementation
+        - REQUIRE: Proper HTML lang attribute
+        - REQUIRE: Viewport meta tags
+        - REQUIRE: Global styles and fonts
+        - BLOCK: Client-side state in root layout
+        - FLAG: Missing global error boundaries
+        - SUGGEST: Performance monitoring setup
+
+    - path: "app/global-error.{ts,tsx}"
+      instructions: |
+        **GLOBAL ERROR BOUNDARY CRITICAL REQUIREMENTS:**
+
+        **1. ERROR HANDLING:**
+        - REQUIRE: Default export of error component
+        - REQUIRE: Proper error parameter typing
+        - REQUIRE: User-friendly error messages
+        - REQUIRE: Error logging without sensitive data
+        - REQUIRE: Reset functionality for error recovery
+        - BLOCK: Error messages exposing sensitive data
+        - FLAG: Missing error recovery mechanisms
+        - SUGGEST: Error reporting integration
+
+    - path: "app/not-found.{ts,tsx}"
+      instructions: |
+        **NOT FOUND PAGE CRITICAL REQUIREMENTS:**
+
+        **1. 404 HANDLING:**
+        - REQUIRE: Default export of not-found component
+        - REQUIRE: User-friendly 404 message
+        - REQUIRE: Navigation back to home or search
+        - REQUIRE: Proper SEO meta tags for 404
+        - REQUIRE: Consistent branding and design
+        - FLAG: Missing navigation options
+        - SUGGEST: Search functionality integration
+
+    - path: "app/loading.{ts,tsx}"
+      instructions: |
+        **LOADING COMPONENT CRITICAL REQUIREMENTS:**
+
+        **1. LOADING STATES:**
+        - REQUIRE: Default export of loading component
+        - REQUIRE: Consistent loading design
+        - REQUIRE: Proper accessibility attributes
+        - REQUIRE: Loading skeleton or spinner
+        - REQUIRE: Responsive loading states
+        - FLAG: Missing loading accessibility
+        - SUGGEST: Progressive loading indicators
+
+    - path: "app/error.{ts,tsx}"
+      instructions: |
+        **ERROR COMPONENT CRITICAL REQUIREMENTS:**
+
+        **1. ERROR DISPLAY:**
+        - REQUIRE: Default export of error component
+        - REQUIRE: Proper error parameter handling
+        - REQUIRE: User-friendly error display
+        - REQUIRE: Error recovery options
+        - REQUIRE: Proper error logging
+        - BLOCK: Sensitive data in error messages
+        - FLAG: Missing error recovery
+        - SUGGEST: Error reporting setup
+
+    - path: "middleware.{ts,js}"
+      instructions: |
+        **NEXT.JS MIDDLEWARE CRITICAL REQUIREMENTS:**
+
+        **1. MIDDLEWARE FUNCTIONALITY:**
+        - REQUIRE: Default export of middleware function
+        - REQUIRE: Proper request/response handling for client-side routing
+        - REQUIRE: Authentication and authorization checks for protected routes
+        - REQUIRE: Secure headers configuration for client-side security
+        - REQUIRE: API authentication token handling for external API calls
+        - REQUIRE: Secure cookie management for authentication
+        - REQUIRE: Route protection and redirects for unauthorized access
+        - REQUIRE: Client-side security headers (CSP, X-Frame-Options, etc.)
+        - BLOCK: Sensitive data exposure in middleware
+        - FLAG: Missing security headers
+        - SUGGEST: Performance monitoring for client-side routing
+
+    - path: "app/**/(.*)/page.{ts,tsx}"
+      instructions: |
+        **ROUTE GROUP PAGES CRITICAL REQUIREMENTS:**
+
+        **1. PAGE STRUCTURE:**
+        - REQUIRE: Default export of page component
+        - REQUIRE: generateMetadata for dynamic SEO
+        - REQUIRE: Proper params and searchParams typing
+        - REQUIRE: Server-side data fetching for external API
+        - REQUIRE: Proper error handling for API failures
+        - REQUIRE: Loading states for async operations
+        - BLOCK: Client-side data fetching in Server Components
+        - FLAG: Missing metadata generation
+        - SUGGEST: SEO optimization
+
+    - path: "app/**/@*/page.{ts,tsx}"
+      instructions: |
+        **PARALLEL ROUTES CRITICAL REQUIREMENTS:**
+
+        **1. PARALLEL ROUTE IMPLEMENTATION:**
+        - REQUIRE: Default export of slot component
+        - REQUIRE: Proper slot component structure
+        - REQUIRE: Conditional rendering based on route
+        - REQUIRE: Proper error boundaries for slots
+        - REQUIRE: Loading states for slot content
+        - FLAG: Missing slot error handling
+        - SUGGEST: Slot-specific optimizations
+
+    - path: "next.config.{ts,js,mjs}"
+      instructions: |
+        **NEXT.JS CONFIGURATION CRITICAL REQUIREMENTS:**
+
+        **1. CONFIGURATION SETUP:**
+        - REQUIRE: TypeScript settings and type checking configuration
+        - REQUIRE: Image optimization and domains setup
+        - REQUIRE: Font optimization with next/font
+        - REQUIRE: Security headers and CSP configuration
+        - REQUIRE: Redirects and rewrites setup
+        - REQUIRE: Environment variable handling
+        - REQUIRE: Build optimization settings
+        - REQUIRE: Output settings for deployment
+
+        **2. SECURITY & PERFORMANCE:**
+        - BLOCK: Experimental features without careful consideration
+        - REQUIRE: Webpack configuration if needed
+        - REQUIRE: Bundle analyzer settings
+        - REQUIRE: Performance monitoring setup
+        - FLAG: Missing security headers configuration
+        - SUGGEST: Custom webpack configuration for optimization
+
+    - path: "package.json"
+      instructions: |
+        **PACKAGE MANAGEMENT CRITICAL REQUIREMENTS:**
+
+        **1. DEPENDENCY SECURITY:**
+        - REQUIRE: Proper version ranges (^, ~, >=) instead of wildcards (*)
+        - REQUIRE: Dependencies separated from devDependencies correctly
+        - REQUIRE: Security-focused dependencies (DOMPurify, sanitize-html, etc.)
+        - REQUIRE: Lightweight alternatives (lodash-es over lodash, date-fns over moment)
+        - REQUIRE: Peer dependencies for libraries
+        - BLOCK: Known security vulnerabilities in dependencies
+        - REQUIRE: npm audit fix for known security issues
+
+        **2. PROJECT METADATA:**
+        - REQUIRE: Proper metadata (name, version, description)
+        - REQUIRE: Organized scripts section with proper build and dev commands
+        - REQUIRE: Repository and license information
+        - REQUIRE: Bundle optimization considerations
+        - REQUIRE: Security policy and vulnerability reporting
+        - REQUIRE: Next.js version and React version compatibility
+
+    - path: "package-lock.json,yarn.lock,pnpm-lock.yaml"
+      instructions: |
+        **LOCK FILE CRITICAL REQUIREMENTS:**
+
+        **1. LOCK FILE INTEGRITY:**
+        - REQUIRE: Lock file presence and integrity
+        - REQUIRE: Consistent package manager usage across the team
+        - REQUIRE: Version conflicts checking
+        - REQUIRE: Security vulnerability implications consideration
+        - REQUIRE: Lock files committed to version control
+        - REQUIRE: Proper package manager (npm, yarn, or pnpm) consistency
+
+    - path: ".env*"
+      instructions: |
+        **ENVIRONMENT VARIABLES CRITICAL SECURITY:**
+
+        **1. SECURITY REQUIREMENTS:**
+        - BLOCK: Sensitive data in client-side environment variables
+        - BLOCK: API keys or secrets in .env files that go to client
+        - REQUIRE: NEXT_PUBLIC_ prefix ONLY for non-sensitive client-side variables
+        - REQUIRE: ALL sensitive data in server-side environment only
+        - REQUIRE: Secure configuration management
+        - BLOCK: Hardcoded secrets, passwords, or private keys
+        - REQUIRE: Secure environment variable management for production builds
+        - REQUIRE: Environment variable validation
+        - REQUIRE: Proper environment variable scoping and validation
+        - FLAG: Missing environment variable validation
+        - SUGGEST: Environment variable schema validation
+
+    - path: "**/*.config.{ts,js,json}"
+      instructions: |
+        **CONFIGURATION FILES CRITICAL SECURITY:**
+
+        **1. SECURITY REQUIREMENTS:**
+        - BLOCK: Hardcoded secrets, API keys, passwords, or tokens
+        - BLOCK: Private keys or certificates committed to repository
+        - REQUIRE: Environment variables for all sensitive configuration
+        - BLOCK: Private keys or certificates in frontend configuration files
+        - REQUIRE: Configuration values validation before use
+        - REQUIRE: Secure defaults for all configuration options
+        - REQUIRE: Proper configuration validation
+        - FLAG: Missing configuration validation
+        - SUGGEST: Configuration schema validation with Zod
+
+    - path: "**/*.{test,spec}.{ts,tsx}"
+      instructions: |
+        **TESTING CRITICAL REQUIREMENTS (ONLY WHEN TEST FILES ARE CREATED OR MODIFIED):**
+
+        **1. TEST COVERAGE:**
+        - REQUIRE: Descriptive test names explaining what is being tested
+        - REQUIRE: Proper test structure (Arrange, Act, Assert)
+        - REQUIRE: Mock implementations for external dependencies
+        - REQUIRE: Type safety in tests with proper TypeScript usage
+        - REQUIRE: Test coverage and edge cases
+        - REQUIRE: Appropriate testing utilities and frameworks
+        - REQUIRE: Integration tests where appropriate
+        - REQUIRE: Testing best practices and patterns
+        - BLOCK: Hardcoded sensitive data in test files
+
+        **2. NEXT.JS SPECIFIC TESTING:**
+        - REQUIRE: Server Components and Server Actions testing
+        - REQUIRE: Error testing scenarios for App Router
+        - REQUIRE: Proper test data and fixtures for Next.js patterns
+        - REQUIRE: App Router specific testing patterns
+
+        **3. SECURITY TESTING:**
+        - REQUIRE: XSS vulnerability prevention testing in user inputs
+        - REQUIRE: CSRF token implementation testing in API calls
+        - REQUIRE: Authentication and authorization flow testing
+        - REQUIRE: Secure cookie settings and session management testing
+        - REQUIRE: Input sanitization and validation testing
+        - REQUIRE: Error handling without information leakage testing
+        - REQUIRE: Rate limiting implementation testing
+        - REQUIRE: CORS policy enforcement testing
+
+    - path: "README.md"
+      instructions: |
+        **DOCUMENTATION CRITICAL REQUIREMENTS:**
+
+        **1. README COMPLETENESS:**
+        - REQUIRE: Proper project description and purpose
+        - REQUIRE: Clear installation and setup instructions
+        - REQUIRE: Usage examples and API documentation
+        - REQUIRE: Environment variables and configuration documentation
+        - REQUIRE: Testing and deployment procedures
+        - REQUIRE: Troubleshooting section
+        - REQUIRE: Security considerations
+        - REQUIRE: License information
+        - SUGGEST: Links to documentation and resources
+ 
+  abort_on_close: true
+  disable_cache: false
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    ignore_title_keywords: ["WIP", "Draft", "Work in Progress"]
+    labels: ["nextjs-15", "frontend"]
+    drafts: false
+    base_branches: []
+  finishing_touches:
+    docstrings:
+      enabled: true
+    unit_tests:
+      enabled: false
+  tools:
+    eslint:
+      enabled: true
+    biome:
+      enabled: true
+    oxc:
+      enabled: true
+    gitleaks:
+      enabled: true
+    semgrep:
+      enabled: false
+      config_file: ""
+    markdownlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    dotenvLint:
+      enabled: true
+    github-checks:
+      enabled: true
+      timeout_ms: 90000
+    ast-grep:
+      rule_dirs: []
+      util_dirs: []
+      essential_rules: true
+      packages: ["@typescript-eslint/eslint-plugin", "@typescript-eslint/parser"]
+    htmlhint:
+      enabled: true
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  opt_out: false
+  web_search:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    filePatterns: ["app/**/*.{ts,tsx}", "**/*.md"]
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
+  jira:
+    usage: auto
+    project_keys: []
+  linear:
+    usage: auto
+    team_keys: []
+  pull_requests:
+    scope: auto
+
+code_generation:
+  docstrings:
+    language: en-US
+    path_instructions:
+      - path: "app/**/*.{ts,tsx}"
+        instructions: "Generate JSDoc comments for all functions, components, and types following Next.js 15 best practices"
+  unit_tests:
+    enabled: false

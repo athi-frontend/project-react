@@ -1,0 +1,159 @@
+# PR Review Configuration for Next.js 15 + React + TypeScript Project
+version: "1.0"
+
+# Tech stacks to review
+tech_stacks:
+  - next-react-typescript
+
+# File inclusion/exclusion patterns
+include_paths:
+  - "app/**/*"
+  - "src/**/*"
+  - "components/**/*"
+  - "lib/**/*"
+  - "utils/**/*"
+  - "hooks/**/*"
+  - "types/**/*"
+  - "constants/**/*"
+  - "middleware.ts"
+  - "next.config.*"
+  - "tailwind.config.*"
+  - "tsconfig.json"
+  - "package.json"
+  - "*.ts"
+  - "*.tsx"
+  - "*.js"
+  - "*.jsx"
+  - "*.json"
+  - "*.md"
+
+exclude_paths:
+  - "node_modules/**/*"
+  - ".next/**/*"
+  - "dist/**/*"
+  - "build/**/*"
+  - "coverage/**/*"
+  - "*.log"
+  - ".env*"
+  - "*.min.js"
+  - "*.min.css"
+  - "public/**/*"
+  - ".vercel/**/*"
+  - "out/**/*"
+
+# Review settings
+review_settings:
+  post_summary_only: true
+  severity_threshold: "medium"
+  require_acceptance_criteria_check: true
+  max_review_length: 3000
+  focus_on_diff: true
+  check_app_router_compliance: true
+
+# Next.js specific configuration
+nextjs_config:
+  app_router_required: true
+  server_components_preferred: true
+  client_components_marked: true
+  server_actions_enabled: true
+  image_optimization_required: true
+  font_optimization_required: true
+  streaming_enabled: true
+
+# TypeScript configuration
+typescript_config:
+  strict_mode: true
+  no_any_allowed: true
+  explicit_return_types: true
+  import_type_preferred: true
+  max_component_lines: 200
+
+# Security settings
+security_config:
+  env_var_client_scope: "NEXT_PUBLIC_*"
+  input_validation_required: true
+  sanitization_required: true
+  no_localStorage_secrets: true
+  no_dangerouslySetInnerHTML: true
+  csrf_protection: true
+
+# Performance settings
+performance_config:
+  code_splitting_required: true
+  dynamic_imports_preferred: true
+  suspense_boundaries_required: true
+  image_optimization_enforced: true
+  bundle_size_monitoring: true
+
+# Styling configuration
+styling_config:
+  css_modules_preferred: true
+  tailwind_utility_classes: true
+  no_complex_inline_styles: true
+  theme_tokens_required: true
+  responsive_design_required: true
+
+# API and data fetching
+api_config:
+  server_actions_preferred: true
+  fetch_caching_required: true
+  cache_invalidation_required: true
+  no_direct_db_access: true
+  centralized_api_client: true
+
+# Error handling
+error_handling_config:
+  error_boundaries_required: true
+  loading_states_required: true
+  user_friendly_errors: true
+  no_sensitive_error_details: true
+  global_error_handling: true
+
+# Integration settings
+integrations:
+  eslint:
+    enabled: true
+    config_file: ".eslintrc.json"
+    fail_on_violations: true
+  
+  typescript:
+    enabled: true
+    config_file: "tsconfig.json"
+    strict_mode: true
+  
+  dependency_scanning:
+    enabled: true
+    tools:
+      - "npm audit"
+      - "snyk"
+    fail_on_critical: true
+  
+  bundle_analysis:
+    enabled: true
+    tools:
+      - "@next/bundle-analyzer"
+    threshold_mb: 5
+
+# Custom guideline overrides (optional)
+guideline_overrides:
+  nextjs: "Next.js 15 App Router patterns and server/client component boundaries"
+  react: "React 18+ patterns with hooks and component composition"
+  typescript: "Strict TypeScript with explicit types and no any usage"
+  security: "Next.js security best practices and environment variable scoping"
+  performance: "Next.js performance optimizations and code splitting"
+  styling: "Tailwind CSS and CSS Modules with design system tokens"
+
+# Automated checks
+automated_checks:
+  app_router_structure: true
+  server_client_boundaries: true
+  data_fetching_patterns: true
+  image_optimization: true
+  naming_conventions: true
+  security_patterns: true
+  hardcoded_values: true
+  inline_styles: true
+  env_var_usage: true
+  performance_patterns: true
+  error_boundaries: true
+  typescript_quality: true

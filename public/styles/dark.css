@@ -1,0 +1,27 @@
+/**
+ * Classification: Confidential
+ */
+
+:root {
+  --primary-color: #ff9500;
+  --secondary-color: #ffefd9;
+  --text-color: #ffffff;
+  --text-dark-color: #999999;
+  --background-color: #000000;
+  --white-color: #222222;
+  --dropdown-hover-color: #000000;
+  --primary-hover-color: #ff9500;
+  --grey-color: #ccc;
+  --btnHover-bg-color: #e9ccff;
+  --gridtable-bg-color: #000000;
+  --gridtable-text-color: #333333;
+  --header-title: #ffffff;
+  --header-stroke: #222222;
+  --black-color: #ffffff;
+  --menuHover-color: #ff9500;
+  --font-family: Poppins, sans-serif;
+  --error-color: #ea1616;
+  --success-color: #00a006;
+  --error-light-color: #E22222;
+  --success-light-color: #1FCB26;
+}
